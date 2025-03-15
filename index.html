@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 급여 계산기</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        .container { max-width: 350px; margin: auto; padding: 15px; border: 1px solid #ddd; border-radius: 10px; background: #f9f9f9; }
+        h2 { color: #0056b3; }
+        input, button { width: 100%; padding: 10px; margin-top: 10px; font-size: 16px; }
+        button { background: #0056b3; color: white; border: none; cursor: pointer; }
+        button:hover { background: #003d82; }
+        .result { margin-top: 15px; font-weight: bold; font-size: 20px; color: #333; }
+    </style>
+</head>
+<body>
+
+    <h2>2025 급여 계산기</h2>
+    <div class="container">
+        <input type="number" id="salary" placeholder="연봉 입력 (만원)" required>
+        <button onclick="calculateSalary()">계산하기</button>
+        <div class="result" id="result">월 실수령액: -</div>
+    </div>
+
+    <script>
+        function calculateSalary() {
+            let salary = document.getElementById("salary").value * 10000; // 연봉 (만원 → 원 변환)
+            if (!salary || salary < 30000000) {
+                alert("최소 3,000만 원 이상의 연봉을 입력하세요.");
+                return;
+            }
+
+            let 국민연금 = salary * 0.045;
+            let 건강보험 = salary * 0.03545;
+            let 장기요양보험 = 건강보험 * 0.1281;
+            let 고용보험 = salary * 0.009;
+            let 소득세 = salary * (salary > 50000000 ? 0.15 : 0.08);
+            let 지방세 = 소득세 * 0.1;
+
+            let 총공제 = 국민연금 + 건강보험 + 장기요양보험 + 고용보험 + 소득세 + 지방세;
+            let 실수령액 = (salary - 총공제) / 12;
+
+            document.getElementById("result").innerHTML = `월 실수령액: ${Math.round(실수령액 / 10000)}만원`;
+        }
+    </script>
+
+</body>
+</html>
